@@ -75,11 +75,15 @@ class ModernTabItem extends StatelessWidget {
               ),
             ],
 
-            Text(
-              item.title,
-              style: isSelected
-                  ? theme.selectedTextStyle
-                  : theme.unselectedTextStyle,
+            Flexible(
+              child: Text(
+                item.title,
+                style: isSelected
+                    ? theme.selectedTextStyle
+                    : theme.unselectedTextStyle,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
 
             if (item.badge != null) ...[
