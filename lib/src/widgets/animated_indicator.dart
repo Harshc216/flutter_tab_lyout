@@ -1,42 +1,32 @@
 import 'package:flutter/material.dart';
 
+import '../enums/tab_style.dart';
 import '../themes/tab_theme.dart';
-import '../utils/constants.dart';
+import '../painters/indicator_painter.dart';
 
-/// Animated indicator shown below or behind the selected tab.
+/// Indicator shown below or behind the selected tab.
 class AnimatedIndicator extends StatelessWidget {
-  /// Creates an animated indicator.
+  /// Creates an indicator.
   const AnimatedIndicator({
     super.key,
-    required this.left,
-    required this.width,
     required this.theme,
+    required this.style,
   });
-
-  /// Left position of the indicator.
-  final double left;
-
-  /// Width of the indicator.
-  final double width;
 
   /// Current theme.
   final TabThemeData theme;
 
+  /// The tab style.
+  final TabStyle style;
+
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: TabConstants.animationDuration,
-      curve: Curves.easeInOut,
-      left: left,
-      bottom: 0,
-      child: AnimatedContainer(
-        duration: TabConstants.animationDuration,
-        width: width,
-        height: TabConstants.indicatorHeight,
-        decoration: BoxDecoration(
-          color: theme.indicatorColor,
-          borderRadius: BorderRadius.circular(50),
-        ),
+    return CustomPaint(
+      painter: IndicatorPainter(
+        color: theme.indicatorColor,
+        style: style,
+        borderRadius: theme.borderRadius,
+        shadowColor: theme.shadowColor,
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../controllers/modern_tab_controller.dart';
 import '../models/tab_item.dart';
 import '../themes/tab_theme.dart';
+import '../enums/tab_style.dart';
 import '../utils/constants.dart';
 
 /// A single tab widget used inside the ModernTabBar.
@@ -14,6 +15,7 @@ class ModernTabItem extends StatelessWidget {
     required this.item,
     required this.controller,
     required this.theme,
+    required this.style,
     this.onTap,
   });
 
@@ -29,6 +31,9 @@ class ModernTabItem extends StatelessWidget {
   /// Theme.
   final TabThemeData theme;
 
+  /// Tab style.
+  final TabStyle style;
+
   /// Called when the tab is tapped.
   final VoidCallback? onTap;
 
@@ -36,27 +41,26 @@ class ModernTabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isSelected = controller.isSelected(index);
 
+    final BorderRadius inkwellRadius = (style == TabStyle.pill ||
+            style == TabStyle.gradient ||
+            style == TabStyle.glass ||
+            style == TabStyle.floating)
+        ? BorderRadius.circular(TabConstants.tabHeight / 2)
+        : theme.borderRadius;
+
     return InkWell(
-      borderRadius: theme.borderRadius,
+      borderRadius: inkwellRadius,
       onTap: item.enabled ? onTap : null,
       child: AnimatedContainer(
         duration: TabConstants.animationDuration,
         height: TabConstants.tabHeight,
         padding: TabConstants.padding,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? theme.selectedColor
-              : theme.backgroundColor,
-          borderRadius: theme.borderRadius,
-          boxShadow: [
-            BoxShadow(
-              color: theme.shadowColor,
-              blurRadius: theme.elevation * 2,
-            ),
-          ],
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (item.icon != null) ...[
               Icon(
